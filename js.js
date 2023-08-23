@@ -133,147 +133,141 @@ const perguntaEresposta = {
   ]
 };
 
-  var primeiraRespostaCerta = null;
-  var pontos = null;
-  var container = document.querySelector('.container');
-  var perguntasTotais = null;
-  var numeroAleatorio = null;
-  var numeroAleatorioPergunta = null;
-  var nome_player = null;
-  var nome_maior_pontuador = null;
-  var maior_pontuacao = null;
-  var continuando = false;
+var primeiraRespostaCerta = null;
+var pontos = null;
+var container = document.querySelector('.container');
+var perguntasTotais = null;
+var numeroAleatorio = null;
+var numeroAleatorioPergunta = null;
+var nome_player = null;
+var nome_maior_pontuador = null;
+var maior_pontuacao = null;
+var continuando = false;
 
-  function btn_sair(){
-    primeiraRespostaCerta = null
-    document.querySelector('#highestScore').textContent = nome_maior_pontuador + " com " + maior_pontuacao + " pontos";
-    document.querySelector('.jogo').style.display = 'none';
-    pontos = null
-    continuando = false;
-    perguntasTotais = null
-    numeroAleatorio = null
-    numeroAleatorioPergunta = null
-    document.getElementById("name").value = "";
-    document.querySelector('.scoreboard').style.display = 'none';
-    document.querySelector('.registration-form').style.display = 'block';
+function btn_sair(){
+  pontos = null;
+  continuando = false;
+  perguntasTotais = null;
+  numeroAleatorio = null;
+  numeroAleatorioPergunta = null;
+  primeiraRespostaCerta = null;
+  document.querySelector('#highestScore').textContent = nome_maior_pontuador + " com " + maior_pontuacao + " pontos";
+  document.querySelector('.jogo').style.display = 'none';
+  document.getElementById("name").value = "";
+  document.querySelector('.scoreboard').style.display = 'none';
+  document.querySelector('.registration-form').style.display = 'block';
+}
+
+function finalizaJogo(){
+  var txtNome =  document.querySelector(".title");
+  var txtPontos =  document.querySelector(".score");
+  document.querySelector('.jogo').style.display = 'none';
+  document.querySelector('.scoreboard').style.display = 'block';
+  if (pontos > maior_pontuacao){
+    maior_pontuacao = pontos;
+    nome_maior_pontuador = nome_player;
+  } if (pontos >= 200){
+    txtNome.textContent = "Parabéns "+ nome_player + " você foi muito bem!";
+    txtPontos.textContent = "Sua pontuação foi de: " + pontos;
+  } else if(pontos == 150){
+    txtNome.textContent = "Parabéns "+ nome_player ;
+    txtPontos.textContent = "Sua pontuação foi de: " + pontos;
+  } else{
+    txtNome.textContent = "Obrigado por jogar "+ nome_player ;
+    txtPontos.textContent = "Sua pontuação foi de: " + pontos;
+  }
+}
+
+function getPerguntasErepostas(){
+  if (perguntasTotais == 5){
+    continuando = true
+  } if (perguntasTotais == 5 && pontos <= 100){
+    finalizaJogo()
+  } else{
+    document.querySelector('.registration-form').style.display = 'none';
+    document.querySelector('.jogo').style.display = 'block';
+    nome_player =  document.getElementById("name").value;
+    numeroAleatorio = (Math.floor(Math.random() * 28) + 1) - 1;
+    numeroAleatorioPergunta = Math.floor(Math.random() * 3) + 1;
+
+    var primeiraPergunta = perguntaEresposta.pergunta[numeroAleatorio];
+
+    // Acessando a resposta correta da primeira pergunta
+    primeiraRespostaCerta = perguntaEresposta.respostaCerta[numeroAleatorio];
+
+    // Acessando a primeira resposta errada da primeira pergunta
+    var primeiraRespostaErrada1 = perguntaEresposta.respostaErrada1[numeroAleatorio];
+
+    // Acessando a segunda resposta errada da primeira pergunta
+    var primeiraRespostaErrada2 = perguntaEresposta.respostaErrada2[numeroAleatorio];
+
+    var botaoResposta1 = document.getElementById("resposta1");
+    var botaoResposta2 = document.getElementById("resposta2");
+    var botaoResposta3 = document.getElementById("resposta3");
+    var pergunta = document.getElementById("pergunta");
+
+    pergunta.textContent = primeiraPergunta;
+    console.log("certa:", primeiraRespostaCerta)
+    if (numeroAleatorioPergunta == 1){
+        botaoResposta1.textContent = primeiraRespostaErrada2;
+        botaoResposta2.textContent = primeiraRespostaErrada1;
+        botaoResposta3.textContent = primeiraRespostaCerta;
+    } else if (numeroAleatorioPergunta == 2){
+        botaoResposta1.textContent = primeiraRespostaCerta;
+        botaoResposta2.textContent = primeiraRespostaErrada1;
+        botaoResposta3.textContent = primeiraRespostaErrada2;
+    } else{
+        botaoResposta1.textContent = primeiraRespostaErrada1;
+        botaoResposta2.textContent = primeiraRespostaCerta;
+        botaoResposta3.textContent = primeiraRespostaErrada2;
+    }
   }
 
-  function finalizaJogo(){
-    if (pontos > maior_pontuacao){
-      maior_pontuacao = pontos;
-      nome_maior_pontuador = nome_player;
-    }
-    document.querySelector('.jogo').style.display = 'none';
-    document.querySelector('.scoreboard').style.display = 'block';
-    var txtNome =  document.querySelector(".title");
-    var txtPontos =  document.querySelector(".score");
-    if (pontos >= 200){
-      txtNome.textContent = "Parabéns "+ nome_player + " você foi muito bem!";
-      txtPontos.textContent = "Sua pontuação foi de: " + pontos;
-    }else if(pontos == 150){
-      txtNome.textContent = "Parabéns "+ nome_player ;
-      txtPontos.textContent = "Sua pontuação foi de: " + pontos;
-    }else{
-      txtNome.textContent = "Obrigado por jogar "+ nome_player ;
-      txtPontos.textContent = "Sua pontuação foi de: " + pontos;
-    }
-  }
+}
 
-  function getPerguntasErepostas(){
-    if (perguntasTotais == 5){
-      continuando = true
-    }
-    if (perguntasTotais == 5 && pontos <= 100){
+function verificaResposta(resposta){
+  perguntasTotais = perguntasTotais + 1 
+  if (numeroAleatorioPergunta == 1 && resposta == 3){
+    container.classList.remove('container');
+    container.classList.add('certo');
+    setTimeout(() => {
+      container.classList.remove('certo');
+    container.classList.add('container');
+    getPerguntasErepostas()
+    }, 1000);
+    pontos = pontos + 50  
+    console.log('acertou')
+  } else if (numeroAleatorioPergunta == 2 && resposta == 1){
+    container.classList.remove('container');
+    container.classList.add('certo');
+    setTimeout(() => {
+      container.classList.remove('certo');
+    container.classList.add('container');
+    getPerguntasErepostas()
+    }, 1000);
+    pontos = pontos + 50 
+      console.log('acertou')
+  } else if (numeroAleatorioPergunta == 3 && resposta == 2){
+    container.classList.remove('container');
+    container.classList.add('certo');
+    setTimeout(() => {
+      container.classList.remove('certo');
+    container.classList.add('container');
+    getPerguntasErepostas()
+    },1000);
+    pontos = pontos + 50 
+      console.log('acertou')
+  } else{
+    if (continuando){
       finalizaJogo()
     }else{
-      document.querySelector('.registration-form').style.display = 'none';
-      document.querySelector('.jogo').style.display = 'block';
-      nome_player =  document.getElementById("name").value;
-      numeroAleatorio = (Math.floor(Math.random() * 28) + 1) - 1;
-      numeroAleatorioPergunta = Math.floor(Math.random() * 3) + 1;
-
-      var primeiraPergunta = perguntaEresposta.pergunta[numeroAleatorio];
-      console.log(primeiraPergunta); 
-
-      // Acessando a resposta correta da primeira pergunta
-      primeiraRespostaCerta = perguntaEresposta.respostaCerta[numeroAleatorio];
-      console.log(primeiraRespostaCerta); 
-
-      // Acessando a primeira resposta errada da primeira pergunta
-      var primeiraRespostaErrada1 = perguntaEresposta.respostaErrada1[numeroAleatorio];
-      console.log(primeiraRespostaErrada1); 
-
-      // Acessando a segunda resposta errada da primeira pergunta
-      var primeiraRespostaErrada2 = perguntaEresposta.respostaErrada2[numeroAleatorio];
-      console.log(primeiraRespostaErrada2);
-
-      var botaoResposta1 = document.getElementById("resposta1");
-      var botaoResposta2 = document.getElementById("resposta2");
-      var botaoResposta3 = document.getElementById("resposta3");
-      var pergunta = document.getElementById("pergunta");
-
-      pergunta.textContent = primeiraPergunta;
-      console.log("certa:", primeiraRespostaCerta)
-      if (numeroAleatorioPergunta == 1){
-          botaoResposta1.textContent = primeiraRespostaErrada2;
-          botaoResposta2.textContent = primeiraRespostaErrada1;
-          botaoResposta3.textContent = primeiraRespostaCerta;
-      }else if (numeroAleatorioPergunta == 2){
-          botaoResposta1.textContent = primeiraRespostaCerta;
-          botaoResposta2.textContent = primeiraRespostaErrada1;
-          botaoResposta3.textContent = primeiraRespostaErrada2;
-      }else{
-          botaoResposta1.textContent = primeiraRespostaErrada1;
-          botaoResposta2.textContent = primeiraRespostaCerta;
-          botaoResposta3.textContent = primeiraRespostaErrada2;
-      }
-    }
-
-  }
-
-  function verificaResposta(resposta){
-    perguntasTotais = perguntasTotais + 1 
-    if (numeroAleatorioPergunta == 1 && resposta == 3){
       container.classList.remove('container');
-      container.classList.add('certo');
+      container.classList.add('errado');
       setTimeout(() => {
-        container.classList.remove('certo');
+        container.classList.remove('errado');
       container.classList.add('container');
       getPerguntasErepostas()
       }, 1000);
-      pontos = pontos + 50  
-      console.log('acertou')
-    }else if (numeroAleatorioPergunta == 2 && resposta == 1){
-      container.classList.remove('container');
-      container.classList.add('certo');
-      setTimeout(() => {
-        container.classList.remove('certo');
-      container.classList.add('container');
-      getPerguntasErepostas()
-      }, 1000);
-      pontos = pontos + 50 
-        console.log('acertou')
-    }else if (numeroAleatorioPergunta == 3 && resposta == 2){
-      container.classList.remove('container');
-      container.classList.add('certo');
-      setTimeout(() => {
-        container.classList.remove('certo');
-      container.classList.add('container');
-      getPerguntasErepostas()
-      },1000);
-      pontos = pontos + 50 
-        console.log('acertou')
-    }else{
-      if (continuando){
-        finalizaJogo()
-      }else{
-        container.classList.remove('container');
-        container.classList.add('errado');
-        setTimeout(() => {
-          container.classList.remove('errado');
-        container.classList.add('container');
-        getPerguntasErepostas()
-        }, 1000);
-      }
     }
   }
+}
