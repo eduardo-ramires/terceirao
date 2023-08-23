@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <style>
+   body {
+  font-family: Arial, sans-serif;
+  background-image: url('IMG_7348.jpg');
+  margin: 0;
+  background-size: 300px;
+  padding: 0;
+  background-position: center;
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  min-height: 100vh; /* Garante que o conteúdo ocupe pelo menos toda a altura da tela */
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.score {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.exit-button {
+  padding: 10px 20px;
+  background-color: #ff5555;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.exit-button:hover {
+  background-color: #e63939;
+}
+
+.container {
+  max-width: 600px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  text-align: center; /* Centraliza o texto dentro do container */
+}
+
+.certo {
+  animation: blink 5s infinite alternate;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #3ff806dd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  text-align: center; /* Centraliza o texto dentro do container */
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.errado {
+  animation: blink 5s infinite alternate;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #ff1515da;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  text-align: center; /* Centraliza o texto dentro do container */
+}
+
+h1 {
+  text-align: center;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+.pergunta {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.respostas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.botao {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.div_sair{
+  display: flex; /* Torna a div um container flexível */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
+
+.botao_sair {
+  padding: 10px;
+  background-color: #ff0000f2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.question {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.answer {
+  text-align: center;
+}
+
+#userAnswer {
+  padding: 5px;
+  font-size: 16px;
+}
+
+
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+#submitAnswer {
+  padding: 5px 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.botao:hover {
+  background-color: #0056b3;
+}
+   </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container" >
+      <div class="jogo" style="display: none;">
+        <h1 >Jogo de Perguntas e Respostas Automobilismo</h1>
+        <div class="teste">
+          <p id="pergunta"></p>
+        </div>
+        <div class="respostas">
+          <button class="botao btn_1" id="resposta1" onclick="verificaResposta(1)"></button>
+          <button class="botao btn_2" id="resposta2" onclick="verificaResposta(2)"></button>
+          <button class="botao btn_3" id="resposta3" onclick="verificaResposta(3)"></button>
+          <div class="div_sair">
+            <button class="exit-button" style="width: 30%;" id="resposta3" onclick="finalizaJogo()">Finalizar</button>
+          </div>
+        </div>
+      </div>
+      <div class="scoreboard" style="display: none;">
+        <h1 class="title"></h1>
+        <p class="score"></p>
+        <button class="exit-button" onclick="btn_sair()">Sair</button>
+      </div>
+      <div class="registration-form" >
+          <h1 >Jogo de Perguntas e Respostas Automobilismo</h1>
+          <label for="name">Digite seu nome:</label>
+          <input type="text" id="name" name="name" placeholder="Digite seu nome" required>
+          <button  onclick="getPerguntasErepostas()" class="submit-button mt-3">Cadastrar</button>
+      </div>
+    </div>
+      <script type="text/javascript" src="js.js"></script>
+      <footer style="display: none;">
+        <p class="mt-3">O maior pontuador é: <span id="highestScore">Nenhum</span></p>
+      </footer>
+</body>
+</html>
