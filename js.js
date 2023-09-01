@@ -8,20 +8,22 @@ const perguntaEresposta = {
       "Quais são os principais materiais utilizados no capacete da moto?",
       "Em qual país foi criada a primeira motocicleta a combustão?",
       "Qual o nome correto de uma das marcas mais iconicas de motociclista?",
-      "Qual é a maior marca de moto de motocross?",
       "Qual material é utilizado para a confecção das baterias de carros elétricos?",
       "Quantos reais custam para recarregar um carro elétrico, aproximadamente?",
-      "Quantos KWH são gastos para percorrer 1KM?",
+      "Quantos KWH são gastos para percorrer 1KM em media?",
       "Qual a maior dificuldade para a produção de carros elétricos?",
-      "Quem inventou o Tesla?",
+      "Quem inventou a Tesla?",
       "Qual utilidade da turbina?",
       "Qual foi o primeiro carro turbinado produzido no Brasil?",
       "Qual função do aerofólio?",
       "Qual utilidade da fibra de carbono?",
       "Qual tipo de pneu usa-se na terra?",
       "Quem fez o motor circulatorio?",
-      "O que deu inspiração a Wankel de criar o motor circulatorio?",
-      "Quem é que criou o cinto de segurança  dos carros?"
+      "Quem foi o criador do cinto de segurança?",
+      "Quem foi o companheiro de Hamilton na sua primeira temporada na McLaren?",
+      "Nascido na Alemanha, Nico Rosberg já competiu na infância também pela bandeira de outro país. Qual?",
+      "Depois da estreia, em 2006, em qual temporada Rosberg conseguiu o seu primeiro pódio na categoria?",
+      "Ехіѕtе umа frаѕе dіtа роr Ауrtоn Ѕеnnа ѕеgundоѕ аntеѕ dе bаtеr nа Таmburеllо еm 1994, еѕѕа grаvаçãо fоі uѕаdа nаѕ іnvеѕtіgаçõеѕ nа éроса quаl аltеrnаtіvа еѕtа а frаѕе dіtа роr Ѕеnnа еm Ímоlа?"
      ],
   respostaCerta: [
       "James Watt",
@@ -32,20 +34,22 @@ const perguntaEresposta = {
       "ABS/Fibra de carbono/Fibra de vidro",
       "Alemanha",
       "Harley-Davidson",
-      "Yamaha wr460F",
       "Lítio",
       "R$100,00",
       "0,186",
       "Infraestrutura",
       "Elon Musk",
-      "auxilia ganho de potência",
+      "Auxilia ganho de potência",
       "Fiat Uno",
-      "aumentar a dirigibilidade",
-      "diminuição de peso",
+      "Aumentar a dirigibilidade",
+      "Diminuição de peso",
       " M/T mud terrain",
       "Wankel",
-      "Bobina",
-      "Preston Tucker"
+      "Preston Tucker",
+      "Fernando Alonso ",
+      "Suécia",
+      "2008 ",
+      "О саrrо раrесе оk"
       ],
   respostaErrada1: [
       "Nikola tesla",
@@ -56,20 +60,22 @@ const perguntaEresposta = {
       "ABS/PVC/Acrilico",
       "Brasil",
       "Harlei-Davison",
-      "CBR 1000",
       "Niquel",
       "R$10,00",
       "0,586",
       "Preconceito",
       "Mark Zuckerberg",
-      "influencia na dirigibilidade da carro",
+      "Influencia na dirigibilidade da carro",
       "Chevrolet Omega",
-      "ganho de potência",
-      "fragilizar o chassi",
-      "semi slick",
+      "Ganho de potência",
+      "Fragilizar o chassi",
+      "Semi slick",
       "Tesla",
-      "Animais",
-      "Tesla"
+      "Tesla",
+      "Jenson Button",
+      "Noruega",
+      "2009",
+      "О саrrо еѕtа bаtеndо muіtо nо сhãо"
      ],
   respostaErrada2: [
       "Elon Musk",
@@ -80,7 +86,6 @@ const perguntaEresposta = {
       "Fibra de vidro/Fibra de Plastico/Ferro",
       "França",
       "Harlei-Davdisons",
-      "Kawasaki Ninza H2",
       "Chumbo",
       "R$150,00",
       "0,86",
@@ -88,12 +93,15 @@ const perguntaEresposta = {
       "Nikolas Tesla",
       "auxiliar na frenagem o automóvel",
       "Chevrolet Camaro",
-      "apenas estilo",
-      "aumento de peso",
-      "pneu careca",
+      "Apenas estilo",
+      "Aumento de peso",
+      "Pneu careca",
       "Newton",
-      "Luneta",
-      "Lula"
+      "Lula",
+      "Heikki Kovalainen",
+      "Finlândia",
+      "2007",
+      "О саrrо еѕtа ѕаіndо muіtо dе frеntе"
       ]
 };
 
@@ -104,9 +112,11 @@ var perguntasTotais = null;
 var numeroAleatorio = null;
 var numeroAleatorioPergunta = null;
 var nome_player = null;
-var nome_maior_pontuador = null;
-var maior_pontuacao = null;
+var nome_maior_pontuador = localStorage.getItem('nome_maior_pontuador')!= undefined ? localStorage.getItem('nome_maior_pontuador') : null
+var maior_pontuacao =  localStorage.getItem('maior_pontuacao') != undefined ? localStorage.getItem('maior_pontuacao') : null
 var continuando = false;
+
+document.addEventListener("DOMContentLoaded", function() {document.querySelector('#highestScore').textContent = nome_maior_pontuador + " com " + maior_pontuacao + " pontos"});
 
 function btn_sair(){
   pontos = null;
@@ -115,7 +125,7 @@ function btn_sair(){
   numeroAleatorio = null;
   numeroAleatorioPergunta = null;
   primeiraRespostaCerta = null;
-  document.querySelector('#highestScore').textContent = nome_maior_pontuador + " com " + maior_pontuacao + " pontos";
+  
   document.querySelector('.jogo').style.display = 'none';
   document.getElementById("name").value = "";
   document.querySelector('.scoreboard').style.display = 'none';
@@ -132,6 +142,10 @@ function finalizaJogo(){
     txtPontos.textContent = "Sua pontuação foi de: " + pontos;
     maior_pontuacao = pontos;
     nome_maior_pontuador = nome_player;
+    document.querySelector('#highestScore').textContent = nome_maior_pontuador + " com " + maior_pontuacao + " pontos"
+    localStorage.setItem('maior_pontuacao', pontos);
+    localStorage.setItem('nome_maior_pontuador', nome_player);
+     localStorage = maior_pontuacao
   } else if (pontos >= 400){
     if (nome_player != null){txtNome.textContent = "Parabéns "+ nome_player + " você foi muito bem!"};
     txtPontos.textContent = "Sua pontuação foi de: " + pontos;
@@ -148,6 +162,7 @@ function finalizaJogo(){
 }
 
 function getPerguntasErepostas(){
+  typeof localStorage !== 'undefined' ? console.log("aq") : console.log("não")
   if (pontos >= 100){
     document.getElementById("pontos").textContent = "Pontos: "+ pontos;
   }else{
@@ -166,7 +181,7 @@ function getPerguntasErepostas(){
     document.querySelector('.registration-form').style.display = 'none';
     document.querySelector('.jogo').style.display = 'block';
     nome_player =  document.getElementById("name").value;
-    numeroAleatorio = (Math.floor(Math.random() * 22) + 1) - 1;
+    numeroAleatorio = (Math.floor(Math.random() * 25) + 1) - 1;
     numeroAleatorioPergunta = Math.floor(Math.random() * 3) + 1;
 
     var primeiraPergunta = perguntaEresposta.pergunta[numeroAleatorio];
